@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('../mysqlOnlyNott');
 var { con } = require('../server');
 
 router.use(function timeLog (req, res, next) {

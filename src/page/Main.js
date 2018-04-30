@@ -15,7 +15,7 @@ export default class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			studentID: this.props.studentID,
+			studentID: '1',
 			prefix: 'นาย',
 			firstname: 'ดาต้าเบส',
 			lastname: 'แมเนจ',
