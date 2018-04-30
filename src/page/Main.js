@@ -13,7 +13,7 @@ export default class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			studentID: this.props.studentID,
+			studentID: '1',
 			prefix: 'นาย',
 			firstname: 'เตชินท์',
 			lastname: 'ศุภผล',
@@ -55,12 +55,12 @@ export default class Main extends Component {
 					</div>
 				</div>
 				<div>
-					<Route path="/Main/Register" render={()=><RegisterPage />} />
-					<Route path="/Main/AddDelete" render={()=><AddDeletePage />} />
-					<Route path="/Main/RegistResult" render={()=><RegistResultPage />} />
-					<Route path="/Main/Remove" render={()=><RemovePage />} />
-					<Route path="/Main/Grade" render={()=><GradePage />} />
-					<Route path="/Main/Tuition" render={()=><TuitionPage />} />
+					<Route path="/Main/Register" render={()=><RegisterPage studentID={this.state.studentID}/>} />
+					<Route path="/Main/AddDelete" render={()=><AddDeletePage studentID={this.state.studentID}/>} />
+					<Route path="/Main/RegistResult" render={()=><RegistResultPage studentID={this.state.studentID}/>} />
+					<Route path="/Main/Remove" render={()=><RemovePage studentID={this.state.studentID}/>} />
+					<Route path="/Main/Grade" render={()=><GradePage studentID={this.state.studentID}/>} />
+					<Route path="/Main/Tuition" render={()=><TuitionPage studentID={this.state.studentID}/>} />
 				</div>
 			</div>
 		);

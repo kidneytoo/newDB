@@ -2,13 +2,20 @@ var app = require('express')
 var router = app.Router();
 var { con } = require('../server');
 var mysql = require('sync-mysql');
+var getData = require('./getData');
 
 var scon = new mysql({
   host     : '127.0.0.1',
   user     : 'root',
-  password : '',
-  database : '',
+  password : 'root',
+  database : 'booboodb',
   port : '3306'
+})
+
+router.post('/register/checkPrerequisite', function(req, res){
+  var cid = req.body.subjectID;
+  var sid = req.body.sid;
+
 })
 
 router.post('/register/reqRegisteredData', function(req, res){
@@ -18,11 +25,10 @@ router.post('/register/reqRegisteredData', function(req, res){
   var data;
   (async() => {
     var t = await(new Promise( async (resolve, reject) => {
-      // await( async() => {
       try{
       await (
           new Promise( async (resolve, reject) => {
-            var sql = "SELECT cid,sec_no FROM reg_in WHERE status='registered' AND sid='" + sid + "'";
+            var sql = "SELECT cid,sec_no FROM reg_in WHERE req_status='Requested' AND sid='" + sid + "'";
             console.log("SQL: " + sql);
             con.query(sql, function (err, result, field) {
               console.log("DATAAAAAA");
@@ -115,57 +121,113 @@ router.post('/register/reqRegisteredData', function(req, res){
 })
 
 router.post('/register/reqSubjectName', function (req, res){
-  var subjID = req.body.subjectID;
-
-  var sql = "SELECT cname FROM course WHERE cid='" + subjID + "'";
-  console.log("SQL: " + sql);
-
-  con.query(sql, function (err, result, field) {
-    console.log("INNNNNNNN");
-    if (err){
-      console.log("ERROR");
-      throw err;
-    }
-    if(result.length == 0){
-      console.log("There is no this subject");
-      res.send({"msg" : "There is no this subject"});
-    }
-    else{
-      console.log(result[0].cname);
-      console.log("success");
-      res.send({  "msg" : "success" ,
-                  "data" : result[0].cname
-                });
-    }
+  console.log(getData);
+  const promise = new Promise((resolve, reject) => {
+    getData.CNameFromCID(req, resolve, reject);
   });
-
+  var data;
+  promise.then(result => {
+    data = result;
+    console.log("DATAAAAAAAA");
+    console.log(data);
+    res.send(data);
+  }).catch(err => {
+    console.log("ERR:",err);
+    res.send({
+      'data' : err
+    });
+  });
 })
 
 router.post('/register/reqAllSection', function (req, res){
-  console.log("in request all section process");
-  var subjID = req.body.subjectID;
+  const promise = new Promise((resolve, reject) => {
+    getData.allSectionfromCID(req,resolve, reject);
+  })
+  promise.then(result => {
+    console.log("student reqAllSection:",result);
+    res.send(result);
+  })
+})
 
-  var sql = "SELECT sec_no FROM section WHERE cid='" + subjID + "'";
-  console.log("SQL: " + sql);
+router.post('/register/checkRegSub', function (req, res){
+  console.log("IN CHK REG SUBJ");
+  var sid = req.body.studentID;
+  var regSubj = req.body.registSubject; // {subjectID:registSubject_before[i].subjectID,section:sect}
+  var approveSec = []
+  var rejectSec = []
+  var promises = []
+  console.log("-> req",req);
+  console.log("-> body",req.body);
+  console.log("-> SID",sid);
+  console.log("-> regSection",regSubj);
+  for (var i = 0; i < regSubj.length ; i++) {
+    console.log("I:",i);
+    for(var j = 0; j < regSubj[i].section.length ; j++){
+      console.log("J:",j);
 
-  con.query(sql, function (err, result, field) {
-    if (err){
-      console.log("ERROR");
-      throw err;
-    }
-    console.log(result);
-    if(result.length == 0){
-      console.log("There is no this subject");
-      res.send({"msg" : "There is no this subject"});
-    }
-    else{
-      console.log("success");
-      res.send({  "msg" : "success" ,
-                  "data" : result
-                });
-    }
+      if(regSubj[i].section.length===1 && regSubj[i].section[0]=='-'){
+        console.log("->INCASE");
+        var aPromise = new Promise((resolve, reject) => {
+          var msg = {
+            'cid': regSubj[i].subjectID,
+            'sec' : '-',
+            'msg': 'All section(s) not found'
+          }
+          console.log("-> MSG:",msg);
+          rejectSec.push(msg);
+          resolve();
+        })
+        promises.push(aPromise);
+      }
 
-  });
+      else{
+        ((i,j) => {
+          try{
+            var cid = regSubj[i].subjectID;
+            var sec = regSubj[i].section[j];
+            var aPromise = new Promise((resolve, reject) => {
+              con.query("SET @msg = 10");
+              con.query("CALL checkRegSub(?, ?, ?, @msg)", [sid,cid,sec]);
+              con.query("SELECT @msg",function (err, result) {
+                if (err) {
+                  console.log("ERR: ",err);
+                  reject(err);
+                }
+                console.log("Result: ",result[0]['@msg']);
+                var msg = {
+                  'cid' : cid,
+                  'sec' : sec,
+                  'msg' : result[0]['@msg']
+                }
+                if(msg['msg'] === 'request success'){
+                  approveSec.push(msg);
+                }
+                else{
+                  rejectSec.push(msg);
+                }
+                resolve(result);
+                // res.json(result);
+              })
+            })
+            aPromise.then();
+
+            promises.push(aPromise);
+
+          }catch(e){
+            console.log("Storing ERROR: ",e);
+          }
+
+        })(i,j);
+      }
+
+    }
+  }
+
+  Promise.all(promises).then(() => {
+    console.log("-> approveMSG",approveSec);
+    console.log("-> rejectMSG",rejectSec);
+    res.send({'approve':approveSec,'reject':rejectSec});
+  })
 })
 
 router.post('/register/storeToRegIn', function (req, res){
@@ -173,32 +235,68 @@ router.post('/register/storeToRegIn', function (req, res){
 
   var sid = req.body.studentID;
   var regSubj = req.body.registSubject; // {subjectID:registSubject_before[i].subjectID,section:sect}
-
+  var probMsg = []
+  var promises = []
+  console.log("-> regSection",regSubj);
   for (var i = 0; i < regSubj.length ; i++) {
     for(var j = 0; j < regSubj[i].section.length ; j++){
-      console.log(j);
 
-      (async (i,j) => {
-        try{
-          var sql = "INSERT INTO reg_in (sid, cid, sec_no, status, req_streak) VALUES ('" + sid + "', '" + regSubj[i].subjectID + "', '" + regSubj[i].section[j] + "', 'registered', '0')";
-          console.log("SQL: " + sql);
+      if(regSubj[i].section.length===1 && regSubj[i].section[0]=='-'){
+        console.log("->INCASE");
+        var aPromise = new Promise((resolve, reject) => {
+          var msg = {
+            'cid': regSubj[i].subjectID,
+            'msg': 'section not found'
+          }
+          console.log("-> MSG:",msg);
+          probMsg.push(msg);
+          resolve();
+        })
 
-          await con.query(sql, function (err, result, field) {
-            if (err){
-              console.log("Storing reg_in ERROR : Subject - " + regSubj[i].subjectID + ", section - " + regSubj[i].section[j]);
-              throw err;
-            }
-            console.log("Storing reg_in successful : Subject - " + regSubj[i].subjectID + ", section - " + regSubj[i].section[j]);
-          });
+        promises.push(aPromise);
+      }
+      else{
+        ((i,j) => {
+          try{
+            var cid = regSubj[i].subjectID;
+            var sec = regSubj[i].section[j];
+            var aPromise = new Promise((resolve, reject) => {
+              con.query("SET @msg = 10");
+              con.query("CALL regInSec(?, ?, ?, @msg)", [sid,cid,sec]);
+              con.query("SELECT @msg",function (err, result) {
+                if (err) {
+                  console.log("ERR: ",err);
+                  reject(err);
+                }
+                console.log("Result: ",result);
+                console.log(result[0]['@msg']);
+                var msg = {
+                  'cid' : cid,
+                  'msg' : result[0]['@msg']
+                }
+                probMsg.push(msg);
+                resolve(result);
+                // res.json(result);
+              })
+            })
+            aPromise.then();
 
-        }catch(e){
-          console.log("Storing ERROR");
-        }
+            promises.push(aPromise);
 
-      })(i,j);
+          }catch(e){
+            console.log("Storing ERROR: ",e);
+          }
 
+        })(i,j);
+      }
     }
   }
+
+  Promise.all(promises).then(() => {
+    console.log("-> probMSG",probMsg);
+    res.send(probMsg);
+  })
+
 })
 
 router.post('/view/registerdTable',function(req, res){
