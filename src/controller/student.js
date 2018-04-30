@@ -234,7 +234,7 @@ router.post('/register/storeToRegIn', function (req, res){
   console.log("IN Reg_IN Storing process");
 
   var sid = req.body.studentID;
-  var regSubj = req.body.registSubject; // {subjectID:registSubject_before[i].subjectID,section:sect}
+  var regSubj = req.body.filteredSubject; // {subjectID:registSubject_before[i].subjectID,section:sect}
   var probMsg = []
   var promises = []
   console.log("-> regSection",regSubj);
