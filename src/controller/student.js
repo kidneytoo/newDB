@@ -376,7 +376,7 @@ router.post('/register/changeInTime', function (req, res){
     }
     console.log("changeInTime RESULT",result);
     if(result[0].used_seats < result[0].seats){
-      
+
     }
     else{
       res.send("Sec full")

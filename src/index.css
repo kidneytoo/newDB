@@ -544,6 +544,132 @@ select {
 
 
 
+/*Transcript*/
+
+.transcriptContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.transcript {
+	width: 595px;
+	height: 842px;
+	margin-left: auto;
+    margin-right: auto;
+    display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: column;
+	margin: 10px; 
+}
+
+.topTranscript {
+	width: 595px;
+	height:180px;
+	align-self: flex-start;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: row;
+	border: 1px black solid;
+}
+
+.middleTranscript {
+	width: 595px;
+	height:560px;
+	align-self: flex-start;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	flex-flow: column wrap;
+	border: 1px black solid;
+	border-top: 0px;
+}
+
+.bottomTranscript {
+	width: 595px;
+	height: 102px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: row;
+	border: 1px black solid;
+	border-top: 0px;
+}
+
+.logoTranscript {
+	width: 200px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	border-right: 1px black solid;
+}
+
+.dogTc {
+	width: 5vw;
+	align-self: center;
+}
+
+.personalInfo {
+	width: 395px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	text-align: left;
+	padding-left: 20px;
+}
+
+.gradeTerm {
+	width: 195px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	font-size: 0.5rem;
+	padding-bottom: 40px;
+}
+
+.blankGrade {
+	width: 195px;
+	height: 500px;
+}
+
+.infoZone {
+	width: 295px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: column;
+	border-right: 1px black solid;
+	text-align: left;
+}
+
+.gradeZone {
+	height: 60px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	flex-flow: column wrap;
+	border-bottom: 1px black solid;
+	font-size: 0.5em;
+}
+
+.gradeZpme > p {
+	align-self: flex-start;
+}
+
+.conditionZone {
+	height: 42px;
+}
+
+
+
 
 
 
