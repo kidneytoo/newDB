@@ -1,0 +1,334 @@
+body {
+	font-size: 1.2rem;
+	font-weight: 300;
+	font-family: 'supermarket', sans-serif;
+	width: 100vw;
+}
+
+h4 {
+	margin: 0px;
+}
+
+table td {
+	text-align: center;
+}
+
+tbody tr {
+	border-top: 10px;
+	border-bottom: 10px;
+}
+
+td {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+button {
+	font-family: inherit;
+	font-size: 1em;
+}
+
+select {
+	font-family: inherit;
+	font-size: 1em;
+}
+
+.button {
+	font-family: inherit;
+	font-size: 0.8em;
+}
+
+.head {
+	text-align: left;
+	padding-left: 40px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	font-size: 1.5em;
+	font-weight: 500;
+}
+
+
+/*Login Page*/
+
+.loginContainer {
+	background: #eba1c2;
+	height: 100vh;
+	text-align: center;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.login2 {
+	align-self: center;
+	width: 40vw;
+}
+.loginLabel {
+	text-align: left;
+	margin: auto;
+	width: 40vw;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: row;
+	vertical-align: middle;
+	color: white;
+	font-size: 1.2em;
+}
+
+.login {
+	width: 30vw;
+}
+
+.dogLogin {
+	height: 30vh;
+}
+
+.selectContainer {
+	width: 40vw;
+}
+
+.personSelect {
+	float: right;
+}
+
+.loginButton {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.regAll {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: row;
+}
+
+.menuBar {
+	background: #eba1c2;
+	min-height: 100vh;
+	width: 30vw;
+}
+
+.header {
+	text-align: center;
+	padding-top: 10px;
+}
+
+.menuChoice {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.dogApp {
+	width: 10vw;
+}
+
+.menuButton {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.pageButton {
+	padding: 20px 20px;
+	border-radius: 8px;
+	background-color: white;
+}
+
+.activeBar {
+	background-color: #ea125d;
+}
+
+.menu-list a {
+	margin: 5px;
+	border-radius: 30px;
+}
+
+
+
+.homeContainer {
+	text-align: center;
+	width: 70vw;
+}
+
+
+
+/*Regist Page*/
+
+.registerContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.registerFill {
+	text-align: center;
+	align-self: center;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.registTable {
+	align-self: center;
+}
+
+.registRow {
+	text-align: center;
+	align-self: center;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: row;
+}
+
+.sectionf {
+	width: 40px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.sectionl {
+	width: 40px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.trow > td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	vertical-align: middle;
+}
+
+#choice {
+	font-size: 1rem;
+}
+
+.submitButton {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/*AddDeletePage*/
+
+.addDeleteContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.addContainer {
+
+}
+
+.deleteContainer {
+
+}
+
+/*RegistResult Page*/
+
+
+
+
+
+/*Remove Page */
+
+.removeContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.removeTable {
+	align-self: center;
+}
+
+
+
+
+/*GradePage*/
+
+.gradeContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+
+
+
+
+/*TuitionPage*/
+
+.tuitionContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.tuition {
+	text-align: left;
+	padding-left: 50px;
+}
+
+.tuitionFee {
+	padding: 5px;
+	background-color: lightgrey;
+	border-radius: 10px;
+	width: 20vw;
+	text-align: center;
+	font-size: 1.5em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.tuitionStatus {
+	padding: 5px;
+	text-align: center;
+	background-color: lightgrey;
+	border-radius: 10px;
+	width: 15vw;
+
+}
