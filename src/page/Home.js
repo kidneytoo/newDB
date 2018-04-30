@@ -3,6 +3,7 @@ import dog from'./image/dog.png'
 import $ from 'jquery'
 import Redirect from 'react-router-dom/Redirect'
 
+var axios = require('axios');
 var studentLogin = '';
 
 export default class Home extends Component {
@@ -28,22 +29,21 @@ export default class Home extends Component {
 		this.setState({ person: evt.target.value });
 	}
 
-	checkAuthentificate = () => {
+	checkAuthentificate = async(e) => {
+
+		e.preventDefault();
+
 		console.log('hello')
 		studentLogin = this.state.studentID;
-		// alert('http://localhost:8888/checkAuthentificate/' + this.state.person);
-		$.post('http://localhost:8888/checkAuthentificate/' + this.state.person, this.state , function(data , status){
-			console.log('checkAunthentification data: ' + data + ', status: ' + status);
-			alert(data);
-			if(data == "Login successful"){
 
-			}
-			else if(data == "Incorrect username or password"){
-				// do nothing - just alert
-			}
-		});
-
-		this.setState({isLogin: true});
+		var data = (await axios.post('http://localhost:8888/checkAuthentificate/' + this.state.person, this.state)).data;
+		alert(data);
+		console.log(data);
+		if(data == "Login successful"){
+			this.setState({
+				isLogin : true
+			})
+		}
 
 	}
 
