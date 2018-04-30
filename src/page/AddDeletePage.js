@@ -97,7 +97,7 @@ export default class AddDeletePage extends Component {
    return {... delChange, changeSection: evt.target.value};
   });
 
-  this.setState({deleteChangeSubject: newDeleteChangeSubject});
+  	this.setState({deleteChangeSubject: newDeleteChangeSubject});
  	}
 
 	handleDelete = (idx) => (evt) => {
