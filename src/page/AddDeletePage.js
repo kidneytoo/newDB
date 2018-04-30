@@ -15,11 +15,21 @@ export default class AddDeletePage extends Component {
 		}
 	}
 
-	handleAddRegistSubject = () => {
-    this.setState({
-      registSubject: this.state.registSubject.concat([{subjectID:'',sectionf:null,oper:"only",sectionl:null}])
-    });
-  	}
+	handleAddSubjectChange =(evt) => {
+		this.setState({addSubject : {subjectID : evt.target.value}});
+	}
+
+	handleSectionfChange =(evt) => {
+		this.setState({addSubject : {sectionf : evt.target.value}});
+	}
+
+	handleOperChange =(evt) => {
+		this.setState({addSubject : {oper : evt.target.value}});
+	}
+
+	handleSectionlChange =(evt) => {
+		this.setState({addSubject : {sectionl : evt.target.value}});
+	}
 
 	handleDelete = (idx) => (evt) => {
 		const newDeleteChangeSubject = this.state.deleteChangeSubject.map((delChange,sidx) => {
@@ -96,17 +106,17 @@ export default class AddDeletePage extends Component {
 								</thead>
 								<tbody>
 									<td>
-										<input value={this.state.addSubject.subjectID} className="input is-rounded is-small" type="text" pattern="[0-9]*" required></input>
+										<input value={this.state.addSubject.subjectID} onChange={this.handleAddSubjectChange} className="input is-rounded is-small" type="text" pattern="[0-9]*" required></input>
 									</td>
 									<td>
-										<input value={this.state.addSubject.sectionf} disabled = {this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" required></input>
-											<select name="choice" id='choice' value={this.state.addSubject.oper}>
+										<input value={this.state.addSubject.sectionf} onChange={this.handleSectionfChange} disabled = {this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" required></input>
+											<select name="choice" id='choice' onChange={this.handleOperChange} value={this.state.addSubject.oper}>
 												<option value="only">เท่านั้น</option>
 												<option value="or">หรือ</option>
 												<option value="to">ถึง</option>
 												<option value="all">ทั้งหมด</option>
 											</select>
-										<input value={this.state.addSubject.sectionl} disabled = {this.state.addSubject.oper === "only" || this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionl" type="text" pattern="[0-9]*" required></input>
+										<input value={this.state.addSubject.sectionl} onChange={this.handleSectionlChange} disabled = {this.state.addSubject.oper === "only" || this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionl" type="text" pattern="[0-9]*" required></input>
 									</td>
 								</tbody>
 							</table>

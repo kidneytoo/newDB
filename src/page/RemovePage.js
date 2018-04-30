@@ -1,28 +1,53 @@
 import React, { Component } from 'react'
 import { Route,Link,NavLink } from 'react-router-dom'
+import Redirect from 'react-router-dom/Redirect'
+import $ from 'jquery'
+import _ from 'lodash'
 
-//จะเขียน function ดึงข้อมูลป่ะ
+//Format ที่จะเก็บใน state subject
+var subj = [{subjectID:'',subjectName:'',section:'',isRemove:false}]
 
 export default class RemovePage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			isFinish : false,
 			studentID : this.props.studentID,
-			registSubj : [], //เป็นตัวเก็บวิชาที่เรียนไป แนะนำให้เก็บ isRemove : false ไปด้วย ไว้ดึงค่า
+			subject : [], //เป็นตัวเก็บวิชาที่เรียนไป แนะนำให้เก็บ isRemove : false ไปด้วย ไว้ดึงค่า
 		}
 	}
 
-	// ไว้เสร็จละดึง comment ออก
+	handleRemove = (idx) => (evt) => {
+		const newRemoveSubject = this.state.subject.map((remSubj,sidx) => {
+			if (idx !== sidx) return remSubj;
+			return {... remSubj, isRemove: !remSubj.isRemove};
+		});
 
-	// toggleChange = () => {
- //    this.setState({
- //      isRemove: !this.state.isRemove,
- //    });
+		this.setState({subject: newRemoveSubject});
+	}
+
+	submitRemove = (evt) => {
+		evt.preventDefault();
+		var confirm = window.confirm("ยืนยันการถอน?");
+		if(confirm == true) {
+			//จัดการกับ Database ตรงนี้แหละ
+			alert("การถอนเสร็จสิ้น");
+			this.setState({isFinish: true});
+		}
+	}
 
 	render() {
+		if(this.state.isFinish) {
+			return(
+				<Redirect to='/Main' />
+			)
+		}
+
+
 		return (
 			<div className = 'removeContainer'>
 				<h1 className="head">ถอนรายวิชา</h1>
+				<form onSubmit={this.submitRemove}>
 				<div className='removeTable'>
 					<table>
 						<thead>
@@ -33,38 +58,20 @@ export default class RemovePage extends Component {
 							<td>ถอนรายวิชา</td>
 						</thead>
 						<tbody>
+							{_.get(this.state, 'subject',[]).map((remSubj,idx) => (
 								<tr>
-									<td>1</td>
-									<td>2110318</td>
-									<td>DIS SYS ESSEN</td>
-									<td>1</td>
-									<td><input type="checkbox"></input></td>
+									<td>{idx+1}</td>
+									<td>{remSubj.subjectID}</td>
+									<td>{remSubj.subjectName}</td>
+									<td>{remSubj.section}</td>
+									<td><input type="checkbox" checked={remSubj.isRemove} onChange={this.handleRemove}></input></td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td>2110332</td>
-									<td>SYS ANALYSIS DSGN</td>
-									<td>3</td>
-									<td><input type="checkbox"></input></td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>2110422</td>
-									<td>DB MGT SYS DESIGN</td>
-									<td>2</td>
-									<td><input type="checkbox"></input></td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>2110471</td>
-									<td>COMP NETWORK I</td>
-									<td>33</td>
-									<td><input type="checkbox"></input></td>
-								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
-				<div><button type="button" className="button is-rounded is-danger">ยืนยัน</button></div>
+				<div><input type="submit" value="ยืนยัน" className="button is-rounded is-danger"></input></div>
+				</form>
 			</div>
 
 
