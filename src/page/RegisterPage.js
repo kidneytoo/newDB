@@ -205,7 +205,7 @@ export default class RegisterPage extends React.Component {
 							detailSect: result
 							// [{
 							//  approve : {cid:"012345" , sec:1 ,  msg:"request success"} ,
-							//  reject : {cid:"012345" , sec:2 , msg:"there is no course"} 
+							//  reject : {cid:"012345" , sec:2 , msg:"there is no course"}
 						  // }]
 			    	});
 						// console.log(this.state.detailSect);
