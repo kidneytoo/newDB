@@ -34,10 +34,31 @@ export default class RemovePage extends Component {
 						</thead>
 						<tbody>
 								<tr>
-									<td><h4>1</h4></td>
-									<td>2110422</td>
-									<td>DB</td>
+									<td>1</td>
+									<td>2110318</td>
+									<td>DIS SYS ESSEN</td>
+									<td>1</td>
+									<td><input type="checkbox"></input></td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>2110332</td>
+									<td>SYS ANALYSIS DSGN</td>
 									<td>3</td>
+									<td><input type="checkbox"></input></td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>2110422</td>
+									<td>DB MGT SYS DESIGN</td>
+									<td>2</td>
+									<td><input type="checkbox"></input></td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>2110471</td>
+									<td>COMP NETWORK I</td>
+									<td>33</td>
 									<td><input type="checkbox"></input></td>
 								</tr>
 						</tbody>

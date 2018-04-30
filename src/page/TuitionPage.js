@@ -4,6 +4,9 @@ import { Route,Link,NavLink } from 'react-router-dom'
 export default class TuitionPage extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			studentID: this.props.studentID
+		}
 	}
 
 	render() {
@@ -17,7 +20,7 @@ export default class TuitionPage extends Component {
 						<p>21,000 บาท</p>
 					</div>
 					<div className="tuitionStatus">
-						<p>สถานะ : ชำระแล้ว</p>
+						<p>สถานะ : <span>ชำระแล้ว</span></p>
 					</div>
 				</div>
 			</div>

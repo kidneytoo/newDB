@@ -6,6 +6,8 @@ import RegistResultPage from './RegistResultPage'
 import RemovePage from './RemovePage'
 import GradePage from './GradePage'
 import TuitionPage from './TuitionPage'
+import RegistControlPage from './RegistControlPage'
+import RemoveControlPage from './RemoveControlPage'
 import Redirect from 'react-router-dom/Redirect'
 import dog from './image/dog.png'
 
@@ -15,21 +17,21 @@ export default class Main extends Component {
 		this.state = {
 			studentID: this.props.studentID,
 			prefix: 'นาย',
-			firstname: 'เตชินท์',
-			lastname: 'ศุภผล',
+			firstname: 'ดาต้าเบส',
+			lastname: 'แมเนจ',
 			person: this.props.person,
 		};
 	}
+
 
 	goHome = () => {
 		<Redirect to='/Main' />
 	}
 
 	render() {
-
 		return(
 			<div className="regAll">
-				<div className="menuBar">
+				<div className="menuBar" style={this.state.person === "staff" ?{background: '#290744'} : {background: '#eba1c2'}}>
 					<div className="header">
 						<img src={dog} className='dogApp' onClick={this.goHome} />
 						<h1>BooBooDB</h1>
@@ -39,6 +41,11 @@ export default class Main extends Component {
 					</div>
 					<div className="menuButton">
 					<aside className="menu">
+						{this.state.person === "staff" ?
+						<ul className="menu-list">
+    						<li><NavLink to="/Main/RegistControlPage" activeClassName="activeBar" className="pageButton">ควบคุมการลงทะเบียนเรียน</NavLink></li>
+    						<li><NavLink to="/Main/RemoveControlPage" activeClassName="activeBar" className="pageButton">ถอนรายวิชาให้นิสิต</NavLink></li>
+  						</ul> :
   						<ul className="menu-list">
     						<li><NavLink to="/Main/Register" activeClassName="activeBar" className="pageButton">ลงทะเบียนเรียน</NavLink></li>
     						<li><NavLink to="/Main/AddDelete" activeClassName="activeBar" className="pageButton">เพิ่ม/ลด รายวิชา</NavLink></li>
@@ -47,6 +54,7 @@ export default class Main extends Component {
     						<li><NavLink to="/Main/Grade" activeClassName="activeBar" className="pageButton">ผลการเรียน</NavLink></li>
     						<li><NavLink to="/Main/Tuition" activeClassName="activeBar" className="pageButton">คำนวณค่าลงทะเบียนเรียน</NavLink></li>
   						</ul>
+  						}
   						<ul className="menu-list">
   							<li><NavLink to="/" className="pageButton">ออกจากระบบ</NavLink></li>
   						</ul>
@@ -54,14 +62,20 @@ export default class Main extends Component {
 					</aside>
 					</div>
 				</div>
+				{this.state.person === "staff" ?
 				<div>
-					<Route path="/Main/Register" render={()=><RegisterPage />} />
-					<Route path="/Main/AddDelete" render={()=><AddDeletePage />} />
-					<Route path="/Main/RegistResult" render={()=><RegistResultPage />} />
-					<Route path="/Main/Remove" render={()=><RemovePage />} />
-					<Route path="/Main/Grade" render={()=><GradePage />} />
-					<Route path="/Main/Tuition" render={()=><TuitionPage />} />
+					<Route path="/Main/RegistControlPage" render={()=><RegistControlPage studentID={this.state.studentID}/>} />
+					<Route path="/Main/RemoveControlPage" render={()=><RemoveControlPage studentID={this.state.studentID}/>} />
+				</div> :
+				<div>
+					<Route path="/Main/Register" render={()=><RegisterPage studentID={this.state.studentID}/>} />
+					<Route path="/Main/AddDelete" render={()=><AddDeletePage studentID={this.state.studentID}/>} />
+					<Route path="/Main/RegistResult" render={()=><RegistResultPage studentID={this.state.studentID}/>} />
+					<Route path="/Main/Remove" render={()=><RemovePage studentID={this.state.studentID}/>} />
+					<Route path="/Main/Grade" render={()=><GradePage studentID={this.state.studentID}/>} />
+					<Route path="/Main/Tuition" render={()=><TuitionPage studentID={this.state.studentID}/>} />
 				</div>
+				}
 			</div>
 		);
 	}

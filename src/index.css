@@ -121,6 +121,14 @@ select {
 	background: #eba1c2;
 	min-height: 100vh;
 	width: 30vw;
+	color: white;
+}
+
+.menuStaff {
+	background: #290744;
+	min-height: 100vh;
+	width: 30vw;
+	color: white;
 }
 
 .header {
@@ -230,6 +238,22 @@ select {
 	padding-bottom: 10px;
 }
 
+.registReq {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+	align-self: center;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.reqButton > button{
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
 /*AddDeletePage*/
 
 .addDeleteContainer {
@@ -244,15 +268,53 @@ select {
 }
 
 .addContainer {
-
+	padding-top: 10px;
+	background: #f3f3f3;
+	border-radius: 10px;
+	width: 60vw;
 }
 
 .deleteContainer {
+	padding-top: 10px;
+	background: #f3f3f3;
+	border-radius: 10px;
+	width: 60vw;
+}
 
+
+.submitButton2 {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: 10vw;
+}
+
+.eiei {
+	width: 8vw;
 }
 
 /*RegistResult Page*/
 
+.registResultContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.registResultTable {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+	align-self: center;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
 
 
 
@@ -290,6 +352,61 @@ select {
 	padding-right: 10px;
 }
 
+.forLoop {
+	align-self: center;
+	padding-bottom: 30px;
+}
+
+.gradeTableContainer {
+	background: #f4f4f4;
+	padding: 10px;
+	margin-bottom: 10px;
+	width: 50vw;
+	border-radius: 20px;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.gradeTableContainer > table > thead > td {
+	background: #eba1c2;
+	border: 4px solid #f4f4f4;
+	border-radius: 50px;
+}
+
+.gradeTableContainer > table > thead > td:nth-child(1) {
+	width: 10vw;
+}
+
+.gradeTableContainer > table > tbody > td:nth-child(1) {
+	width: 10vw;
+}
+
+.gradeTableContainer > table > thead > td:nth-child(2) {
+	width: 34vw;
+}
+
+.gradeTableContainer > table > tbody > td:nth-child(2) {
+	width: 34vw;
+}
+
+.gradeTableContainer > table > thead > td:nth-child(3) {
+	width: 4vw;
+}
+
+.gradeTableContainer > table > tbody > td:nth-child(3) {
+	width: 4vw;
+}
+
+.gradeTableContainer > table > thead > td:nth-child(4) {
+	width: 2vw;
+}
+
+.gradeTableContainer > table > tbody > td:nth-child(4) {
+	width: 2vw;
+}
+
 
 
 
@@ -317,9 +434,9 @@ select {
 	padding: 5px;
 	background-color: lightgrey;
 	border-radius: 10px;
-	width: 20vw;
+	width: 30vw;
 	text-align: center;
-	font-size: 1.5em;
+	font-size: 1.8em;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
@@ -329,6 +446,165 @@ select {
 	text-align: center;
 	background-color: lightgrey;
 	border-radius: 10px;
-	width: 15vw;
+	font-size: 1.2em;
+	width: 20vw;
+}
 
+.tuitionStatus > p > span {
+	color: limegreen;
+}
+
+
+
+/*Register Control Page*/
+
+.registControlContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.registControl {
+	margin-left: 10px;
+	width: 20vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: row;
+	padding-bottom: 20px;
+}
+
+.startRegistButton {
+	width: 20vw;
+}
+
+/*RemoveControl Page*/
+
+.removeControlContainer {
+	text-align: center;
+	width: 70vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.searchToRemove {
+	padding-left: 20px;
+	width: 23vw;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	flex-flow: row;
+}
+
+.searchToRemove > input {
+	width: 15vw;
+}
+
+
+.nisit {
+	align-self: center;
+	color: white;
+	width: 50vw;
+	background-color: #290744;
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.removeControlTable {
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	text-align: center;
+	align-self: center;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	flex-flow: column;
+}
+
+.removeControlTable > table {
+	align-self: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: limegreen;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px limegreen;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
