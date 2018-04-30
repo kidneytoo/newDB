@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { Route,Link,NavLink } from 'react-router-dom'
+import $ from 'jquery'
+import _ from 'lodash'
 
-var addSubj = [{subjectID:'',sectionf:null,oper:"only",sectionl:null}];
+var deleteChangeSubj = [{subjectID:'',subjectName:'',section:'',isChange:false,changeSection:'',isDelete:false,}];
 
 export default class AddDeletePage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			studentID: this.props.studentID,
-			addSubject: {subjID:null,sectionf:null,oper:null,sectionl:null},
-			// isDelete: false,
-			// isChange: false,
+			addSubject: {subjectID:'',sectionf:null,oper:"only",sectionl:null},
+			deleteChangeSubject: [], //ดึงข้อมูลจาก DB มีตัวแปรข้างในเหมือน deleteChangeSubj
 		}
 	}
 
@@ -20,13 +21,32 @@ export default class AddDeletePage extends Component {
     });
   	}
 
-  	// handleDelete = (evt) => {
-  	// 	this.setState({isDelete: !this.state.isDelete});
-  	// }
+	handleDelete = (idx) => (evt) => {
+		const newDeleteChangeSubject = this.state.deleteChangeSubject.map((delChange,sidx) => {
+			if (idx !== sidx) return delChange;
+			return {... delChange, isDelete: !delChange.isDelete};
+		});
 
-  	// handleChange = (evt) => {
-  	// 	this.setState({isChange: !this.state.isChange});
-  	// }
+		this.setState({deleteChangeSubject: newDeleteChangeSubject});
+	}
+
+  	handleChange = (idx) => (evt) => {
+		const newDeleteChangeSubject = this.state.deleteChangeSubject.map((delChange,sidx) => {
+			if (idx !== sidx) return delChange;
+			return {... delChange, isChange: !delChange.isChange};
+		});
+
+		this.setState({deleteChangeSubject: newDeleteChangeSubject});
+	}
+
+	handleSectionChange = (idx) => (evt) => {
+		const newDeleteChangeSubject = this.state.deleteChangeSubject.map((delChange,sidx) => {
+			if (idx !== sidx) return delChange;
+			return {... delChange, changeSection: !delChange.changeSection};
+		});
+
+		this.setState({deleteChangeSubject: newDeleteChangeSubject});
+	}
 
 	render() {
 		return (
@@ -46,50 +66,19 @@ export default class AddDeletePage extends Component {
 									<td>ลดรายวิชา</td>
 								</thead>
 								<tbody>
+									{_.get(this.state, 'deleteChangeSubject',[]).map((delChangeSubj,idx) => (
 									<tr>
-										<td>1</td>
-										<td>2110318</td>
-										<td>DIS SYS ESSEN</td>
-										<td>1</td>
+										<td>{idx+1}</td>
+										<td>{delChangeSubj.subjectID}</td>
+										<td>{delChangeSubj.subjectName}</td>
+										<td>{delChangeSubj.section}</td>
 										<td>
-											<input checked={this.state.isChange} onChange={this.handleChange} disabled type="checkbox"></input>
-											<input className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" disabled={!this.state.isChange}required></input>
+											<input checked={delChangeSubj.isChange} onChange={this.handleChange} disabled type="checkbox" disabled={delChangeSubj.isDelete}></input>
+											<input className="input is-rounded is-small" type="text" pattern="[0-9]*" disabled={!delChangeSubj.isChange} value={delChangeSubj.changeSection} onChange={this.handleSectionChange} required></input>
 										</td>
-										<td><input checked={this.state.isDelete} onChange={this.handleDelete} disabled={this.state.isChange} type="checkbox"></input></td>
+										<td><input checked={delChangeSubj.isDelete} onChange={this.handleDelete} disabled={delChangeSubj.isChange} type="checkbox"></input></td>
 									</tr>
-									<tr>
-										<td>2</td>
-									<td>2110332</td>
-									<td>SYS ANALYSIS DSGN</td>
-									<td>3</td>
-										<td>
-											<input checked={this.state.isChange} onChange={this.handleChange} disabled={this.state.isDelete}type="checkbox"></input>
-											<input className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" required></input>
-										</td>
-										<td><input checked={this.state.isDelete} onChange={this.handleDelete} disabled type="checkbox"></input></td>
-									</tr>
-									<tr>
-										<td>3</td>
-									<td>2110422</td>
-									<td>DB MGT SYS DESIGN</td>
-									<td>2</td>
-										<td>
-											<input checked={this.state.isChange} onChange={this.handleChange} disabled={this.state.isDelete}type="checkbox"></input>
-											<input className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" disabled={!this.state.isChange}required></input>
-										</td>
-										<td><input checked={this.state.isDelete} onChange={this.handleDelete} disabled={this.state.isChange} type="checkbox"></input></td>
-									</tr>
-									<tr>
-										<td>4</td>
-									<td>2110471</td>
-									<td>COMP NETWORK I</td>
-									<td>33</td>
-										<td>
-											<input checked={this.state.isChange} onChange={this.handleChange} disabled={this.state.isDelete}type="checkbox"></input>
-											<input className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" disabled={!this.state.isChange}required></input>
-										</td>
-										<td><input checked={this.state.isDelete} onChange={this.handleDelete} disabled={this.state.isChange} type="checkbox"></input></td>
-									</tr>
+									))}
 								</tbody>
 							</table>
 							<div class="submitButton2"><input type="submit" value="ยืนยัน" className="button is-rounded is-danger eiei"></input></div>
@@ -107,7 +96,7 @@ export default class AddDeletePage extends Component {
 								</thead>
 								<tbody>
 									<td>
-										<input value={this.state.addSubject.subjID} className="input is-rounded is-small" type="text" pattern="[0-9]*" required></input>
+										<input value={this.state.addSubject.subjectID} className="input is-rounded is-small" type="text" pattern="[0-9]*" required></input>
 									</td>
 									<td>
 										<input value={this.state.addSubject.sectionf} disabled = {this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" required></input>
