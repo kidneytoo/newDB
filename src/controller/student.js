@@ -12,6 +12,27 @@ var scon = new mysql({
   port : '3306'
 })
 
+router.post('/register/reqApproveSubj',function(req, res){
+  var sid = req.body.sid;
+
+  var sql = "SELECT * FROM reg_in WHERE req_status='Approved'";
+  console.log("SQL: " + sql);
+  con.query(sql, function (err, result, field) {
+    // console.log("DATAAAAAA");
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log("reqCredit RESULT",result);
+    if(result.length === 0){
+      res.send("You do not have any approved course.");
+    }
+    else{
+      res.send(result);
+    }
+  })
+})
+
 router.post('/register/reqCredit',function(req, res){
   console.log("!!!!!!!!!!!!!!!");
   var cname = req.body.cname;
@@ -314,6 +335,53 @@ router.post('/register/storeToRegIn', function (req, res){
     res.send(probMsg);
   })
 
+})
+
+router.post('/register/withdrawIntime', function (req, res){
+  console.log("@@@ Withdraw");
+  var data = req.body.deleteChangeSubject;
+  var sid = data.studentID;
+  var cid = data.subjectID;
+  var sec = data.section;
+
+  console.log(data,sid,cid,sec);
+
+  con.query("SET @msg = 10");
+  con.query("CALL withdrawInTime(?, ?, ?, @msg)", [sid,cid,sec]);
+  con.query("SELECT @msg",function (err, result) {
+    if (err) {
+      console.log("ERR: ",err);
+      res.send(err);
+    }
+    console.log("Result: ",result);
+    res.send(result);
+    // res.json(result);
+  })
+})
+
+router.post('/register/changeInTime', function (req, res){
+  var data = req.body.deleteChangeSubject;
+  var sid = data.studentID;
+  var cid = data.subjectID;
+  var sec = data.section;
+  var changeTo = data.changeSection;
+
+  // var sql = "SELECT seats,used_seats FROM section WHERE cname='" + cname + "'";
+  // console.log("SQL: " + sql);
+  con.query("SELECT seats,used_seats FROM section WHERE cid='?' AND sec_no='?'", [cid, changeTo] , function (err, result, field) {
+    // console.log("DATAAAAAA");
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log("changeInTime RESULT",result);
+    if(result[0].used_seats < result[0].seats){
+      
+    }
+    else{
+      res.send("Sec full")
+    }
+  })
 })
 
 router.post('/view/registerdTable',function(req, res){
