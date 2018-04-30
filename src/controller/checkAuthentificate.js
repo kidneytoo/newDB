@@ -34,4 +34,32 @@ router.post('/student', function (req, res){
   });
 })
 
+router.post('/staff', function (req, res){
+  console.log("INNNN");
+  // console.log(req.body);
+  var id = req.body.studentID;
+  var password = req.body.password;
+  // console.log('checkAuthentificate ' + id + " " + password);
+  var sql = "SELECT staffid,pwd FROM staff WHERE staffid='" + id + "' AND pwd = '" + password + "'";
+  console.log("SQL: " + sql);
+
+  con.query(sql, function (err, result, field) {
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log(result);
+    if(result.length == 0){
+      res.send("Incorrect username or password");
+    }
+    else if(result.length == 1){
+      res.send("Login successful");
+    }
+    else{
+      res.send("Have problem : There are several ID same as this.")
+    }
+
+  });
+})
+
 module.exports = router ;
