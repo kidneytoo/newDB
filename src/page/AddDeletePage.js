@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Route,Link,NavLink } from 'react-router-dom'
+import Redirect from 'react-router-dom/Redirect'
 import $ from 'jquery'
 import _ from 'lodash'
 
@@ -9,6 +10,7 @@ export default class AddDeletePage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			isFinish: false,
 			studentID: this.props.studentID,
 			addSubject: {subjectID:'',sectionf:null,oper:"only",sectionl:null},
 			deleteChangeSubject: [], //ดึงข้อมูลจาก DB มีตัวแปรข้างในเหมือน deleteChangeSubj
@@ -16,19 +18,19 @@ export default class AddDeletePage extends Component {
 	}
 
 	handleAddSubjectChange =(evt) => {
-		this.setState({addSubject : {subjectID : evt.target.value}});
+		this.setState({addSubject : {... this.state.addSubject, subjectID : evt.target.value}});
 	}
 
 	handleSectionfChange =(evt) => {
-		this.setState({addSubject : {sectionf : evt.target.value}});
+		this.setState({addSubject : {... this.state.addSubject,sectionf : evt.target.value}});
 	}
 
 	handleOperChange =(evt) => {
-		this.setState({addSubject : {oper : evt.target.value}});
+		this.setState({addSubject : {... this.state.addSubject,oper : evt.target.value}});
 	}
 
 	handleSectionlChange =(evt) => {
-		this.setState({addSubject : {sectionl : evt.target.value}});
+		this.setState({addSubject : {... this.state.addSubject,sectionl : evt.target.value}});
 	}
 
 	handleDelete = (idx) => (evt) => {
@@ -58,7 +60,41 @@ export default class AddDeletePage extends Component {
 		this.setState({deleteChangeSubject: newDeleteChangeSubject});
 	}
 
+	subjectChangeAndDelete = (evt) => {
+		evt.preventDefault();
+
+		//ตรวจอันที่ลดรัว ๆ ไป
+
+		var confirm = window.confirm("ยืนยันการลด/เปลี่ยนตอนเรียน?");
+		if(confirm == true) {
+			//จัดการกับ Database ตรงนี้แหละ
+			alert("เสร็จสิ้น");
+			this.setState({isFinish: true});
+		}
+	}
+
+	subjectAdd = (evt) => {
+		evt.preventDefault();
+
+
+		//ตรวจว่าที่เพิ่มมันเข้าได้ไหม
+
+		//ถ้าได้ ให้ทำอันนี้
+		var confirm = window.confirm("ยืนยันการเพิ่มรายวิชา?");
+		if(confirm == true) {
+			//จัดการกับ Database ตรงนี้แหละ
+			alert("การเพิ่มรายวิชาเสร็จสิ้น");
+			this.setState({isFinish: true});
+		}
+	}
+
 	render() {
+		if(this.state.isFinish) {
+			return(
+				<Redirect to='/Main' />
+			)
+		}
+
 		return (
 			<div className="addDeleteContainer">
 				<h1 className="head">เพิ่ม/ลด รายวิชา</h1>
@@ -98,7 +134,7 @@ export default class AddDeletePage extends Component {
 					<h4>เพิ่มรายวิชา</h4>
 					<div className="addContainer">
 						<div className="addTable">
-							<form>
+							<form onSubmit={this.subjectAdd}>
 							<table>
 								<thead>
 									<td>รหัสวิชา</td>
