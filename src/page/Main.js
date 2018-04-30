@@ -8,6 +8,7 @@ import GradePage from './GradePage'
 import TuitionPage from './TuitionPage'
 import RegistControlPage from './RegistControlPage'
 import RemoveControlPage from './RemoveControlPage'
+import Transcript from './Transcript'
 import Redirect from 'react-router-dom/Redirect'
 import dog from './image/dog.png'
 

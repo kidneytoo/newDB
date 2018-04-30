@@ -64,7 +64,7 @@ export default class RemovePage extends Component {
 									<td>{remSubj.subjectID}</td>
 									<td>{remSubj.subjectName}</td>
 									<td>{remSubj.section}</td>
-									<td><input type="checkbox" checked={remSubj.isRemove} onChange={this.handleRemove}></input></td>
+									<td><input type="checkbox" checked={remSubj.isRemove} onChange={this.handleRemove(idx)}></input></td>
 								</tr>
 							))}
 						</tbody>

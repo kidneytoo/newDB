@@ -101,7 +101,7 @@ export default class AddDeletePage extends Component {
 					<h4>ลดรายวิชาและเปลี่ยนตอนเรียน</h4>
 					<div className="deleteContainer">
 						<div className="deleteTable">
-							<form>
+							<form onSubmit={this.subjectChangeAndDelete}>
 							<table>
 								<thead>
 									<td>ลำดับ</td>
@@ -119,10 +119,10 @@ export default class AddDeletePage extends Component {
 										<td>{delChangeSubj.subjectName}</td>
 										<td>{delChangeSubj.section}</td>
 										<td>
-											<input checked={delChangeSubj.isChange} onChange={this.handleChange} disabled type="checkbox" disabled={delChangeSubj.isDelete}></input>
-											<input className="input is-rounded is-small" type="text" pattern="[0-9]*" disabled={!delChangeSubj.isChange} value={delChangeSubj.changeSection} onChange={this.handleSectionChange} required></input>
+											<input checked={delChangeSubj.isChange} onChange={this.handleChange(idx)} disabled type="checkbox" disabled={delChangeSubj.isDelete}></input>
+											<input className="input is-rounded is-small" type="text" pattern="[0-9]*" disabled={!delChangeSubj.isChange} value={delChangeSubj.changeSection} onChange={this.handleSectionChange(idx)} required></input>
 										</td>
-										<td><input checked={delChangeSubj.isDelete} onChange={this.handleDelete} disabled={delChangeSubj.isChange} type="checkbox"></input></td>
+										<td><input checked={delChangeSubj.isDelete} onChange={this.handleDelete(idx)} disabled={delChangeSubj.isChange} type="checkbox"></input></td>
 									</tr>
 									))}
 								</tbody>
