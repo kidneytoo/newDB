@@ -30,6 +30,7 @@ export default class RemovePage extends Component {
 		evt.preventDefault();
 		var confirm = window.confirm("ยืนยันการถอน?");
 		if(confirm == true) {
+			//จัดการกับ Database ตรงนี้แหละ
 			alert("การถอนเสร็จสิ้น");
 			this.setState({isFinish: true});
 		}
