@@ -3,6 +3,7 @@ import Redirect from 'react-router-dom/Redirect'
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Cookies from 'universal-cookie';
+import _ from 'lodash'
 var tools = require('../utilityFunction');
 var axios = require('axios');
 
@@ -98,6 +99,8 @@ export default class RegisterPage extends React.Component {
 									var sectionExisting;
 									var sect = [];
 
+									console.log(registSubject_before[i]);
+
 									var subjNamet = (axios.post('http://localhost:8888/student/register/reqSubjectName', {"subjectID":subjectID})); //ชื่อวิชา
 									subjNamet.then((result) => {
 										console.log(result);
@@ -118,7 +121,7 @@ export default class RegisterPage extends React.Component {
 													return acc;
 												}, false)
 											};
-
+											console.log(registSubject_before[i]);
 											if(oper == "only" && checkSec(sectionf)) {
 												sect.push(sectionf);
 											}
@@ -192,17 +195,33 @@ export default class RegisterPage extends React.Component {
 			var sectionFilter = filterSection(this.state.registSubject,this.state.studentID);
 			sectionFilter.then((result) => {
 				console.log(result);
-				var detailSubj = getDetailSubj(this.state.studentID,result);
-				detailSubj.then((result) => {
-					console.log(result);
 
-					if(result.reject.length !== 0){
+				var detailSubj = getDetailSubj(this.state.studentID,result);
+				detailSubj.then((result2) => {
+					console.log(result2);
+					var reject = result2.reject;
+					var approve = result2.approve;
+					var hasProb = false;
+					reject.forEach((re,i) => {
+						var t = true ;
+						approve.forEach((ap,j) => {
+							if(re.cid === ap.cid){
+								t = false;
+							}
+						})
+						if(t == true){
+							hasProb = true;
+						}
+					})
+
+					if(hasProb){
 						alert("There are problem about your register course");
 					}
 					else{
 			    	this.setState({
 			    		isSubmit: true,
-							detailSect: result
+							filteredSubject : result, // [ {subjectID: "2022894", section: [1,2,3], subjectName: "DOC DISSERT SEM"} ]
+							detailSect: result2
 							// [{
 							//  approve : {cid:"012345" , sec:1 ,  msg:"request success"} ,
 							//  reject : {cid:"012345" , sec:2 , msg:"there is no course"}
@@ -210,7 +229,6 @@ export default class RegisterPage extends React.Component {
 			    	});
 						// console.log(this.state.detailSect);
 					}
-
 				})
 			})
 		}
@@ -222,10 +240,14 @@ export default class RegisterPage extends React.Component {
   	}
 
   	setInit = () => {
-		registSj = [{subjectID:'',sectionf:null,oper:"only",sectionl:null}];
+			registSj = [{subjectID:'',sectionf:null,oper:"only",sectionl:null}];
   	}
 
-  	goMain = (evt) => {
+  	goMain = async(evt) => {
+
+			var msg = await axios.post('http://localhost:8888/student/register/storeToRegIn', this.state);
+			console.log(msg);
+
   		this.setState({isRegist: true});
   	}
 
@@ -242,6 +264,26 @@ export default class RegisterPage extends React.Component {
 				{this.state.isSubmit ?
 				<div>
 					<h1>{this.state.studentID}</h1>
+					<div className='registConfirmTable'>
+					<table>
+					<thead>
+					<td>ลำดับ</td>
+					<td>รหัสวิชา</td>
+					<td>ชื่อวิชา</td>
+					<td>Section</td>
+					</thead>
+					<tbody>
+					{_.get(this.state, 'filteredSubject', []).map((registSubj,idx) => (
+						<tr>
+						<td><h4>{idx+1}</h4></td>
+						<td>{registSubj.subjectID}</td>
+						<td>{registSubj.subjectName}</td>
+						<td>{registSubj.section.join()}</td>
+						</tr>
+					))}
+					</tbody>
+					</table>
+					</div>
 					<div>
 					<button type="button" className="button is-danger is-rounded" onClick={this.comeBack}>ย้อนกลับ</button>
 					<button type="button" className="button is-danger is-rounded" onClick={this.goMain}>ยืนยัน</button>
