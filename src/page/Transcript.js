@@ -20,13 +20,260 @@ export default class Transcript extends Component {
 							<h6>Thailand</h6>
 						</div>
 						<div className="personalInfo">
-							<p>รหัสนิสิต : 5831022021</p>
-							<p>ชื่อ : นายเตชินท์ ศุภผล</p>
+							<p>รหัสนิสิต : 583xxxxxxx</p>
+							<p>ชื่อ : นายดาต้าเบส ดีบี</p>
 							<p>คณะ : วิศวกรรมศาสตร์</p>
 							<p>ภาควิชา : วิศวกรรมคอมพิวเตอร์</p>
 						</div>
 					</div>
 					<div className="middleTranscript">
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="gradeTerm">
+							<p>Semester x Year x</p>
+							<div>
+								<table>
+									<thead>
+									</thead>
+									<tbody>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+										<tr>
+											<td>XXXXXXXX</td>
+											<td>DB MGT SYS DESIGN</td>
+											<td>3</td>
+											<td>X</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="blankGrade">
+						</div>
 					</div>
 					<div className="bottomTranscript">
 						<div className="infoZone">
