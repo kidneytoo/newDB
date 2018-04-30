@@ -12,6 +12,23 @@ var scon = new mysql({
   port : '3306'
 })
 
+router.post('/register/reqCredit',function(req, res){
+  console.log("!!!!!!!!!!!!!!!");
+  var cname = req.body.cname;
+
+  var sql = "SELECT credit FROM course WHERE cname='" + cname + "'";
+  console.log("SQL: " + sql);
+  con.query(sql, function (err, result, field) {
+    // console.log("DATAAAAAA");
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log("reqCredit RESULT",result);
+    res.send(result);
+  })
+})
+
 router.post('/register/checkPrerequisite', function(req, res){
   var cid = req.body.subjectID;
   var sid = req.body.sid;

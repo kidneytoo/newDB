@@ -1,12 +1,43 @@
 import React, { Component } from 'react'
 import { Route,Link,NavLink } from 'react-router-dom'
+import _ from 'lodash'
+var axios = require('axios');
+
+function getRegistData(studentID) {
+	var sid = studentID;
+	var regData;
+	console.log("GetRegData");
+	return new Promise( async (resolve, reject) => {
+		await( async() => {
+			regData = (await axios.post('http://localhost:8888/student/register/reqRegisteredData',{"sid" : sid})).data;
+			console.log(regData);
+		})();
+		resolve("success")
+	}).then(async(successMsg) => {
+		console.log(regData);
+		for(var i = 0; i < regData.length ; i++){
+			console.log("IN foreach",regData[i].cname);
+			var credit = (await axios.post('http://localhost:8888/student/register/reqCredit',{"cname" : regData[i].cname})).data[0].credit;
+			console.log(credit);
+			regData[i].credit = credit;
+		}
+		console.log(regData);
+		return regData;
+	})
+}
 
 export default class RegistResultPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			studentID: this.props.studentID,
+			studentID: this.props.studentID
 		}
+		setTimeout(async () => {
+			let response = await getRegistData(this.props.studentID);
+			this.setState({
+				registSubject: response
+			})
+		}, 0);
 	}
 
 	render() {
@@ -23,34 +54,15 @@ export default class RegistResultPage extends Component {
 							<td>หน่วยกิต</td>
 						</thead>
 						<tbody>
-							<tr>
-									<td>1</td>
-									<td>2110318</td>
-									<td>DIS SYS ESSEN</td>
-									<td>1</td>
-									<td>1</td>
-								</tr>
+							{_.get(this.state, 'registSubject', []).map((registSubj,idx) => (
 								<tr>
-									<td>2</td>
-									<td>2110332</td>
-									<td>SYS ANALYSIS DSGN</td>
-									<td>3</td>
-									<td>3</td>
+									<td><h4>{idx+1}</h4></td>
+									<td>{registSubj.cid}</td>
+									<td>{registSubj.cname}</td>
+									<td>{registSubj.sec_no.join()}</td>
+									<td>{registSubj.credit}</td>
 								</tr>
-								<tr>
-									<td>3</td>
-									<td>2110422</td>
-									<td>DB MGT SYS DESIGN</td>
-									<td>2</td>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>2110471</td>
-									<td>COMP NETWORK I</td>
-									<td>33</td>
-									<td>3</td>
-								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
