@@ -1,6 +1,38 @@
 import React, { Component } from 'react'
 import { Route,Link,NavLink } from 'react-router-dom'
 
+var axios = require('axios')
+
+// tuition: response.tuition, //ไว้ดึงจาก DB Generate ค่าเทอม
+// isPaid: response.isPaid, //ถ้าไม่มีก็จีจี
+// sem: response.sem,				//ดึง DB
+// year: response.year,			//ดึง DB
+// department: response.department,	//ดึง DB
+// faculty: response.faculty,		//ดึง DB
+
+function getTuitionData(studentID) {
+	var sid = studentID;
+	var regData = {};
+
+	// console.log("GetRegData");
+
+	return new Promise( async (resolve, reject) => {
+		await( async() => {
+			console.log("Nottyking");
+			regData = (await axios.post('http://localhost:8888/student/register/reqTuitionData',{"sid" : sid})).data;
+			console.log("Mira");
+			console.log(regData);
+		})();
+		// console.log('passing');
+		resolve("success")
+	}).then(async(successMsg) => {
+		console.log(regData);
+
+		// console.log(regData);
+		return regData;
+	})
+}
+
 export default class TuitionPage extends Component {
 	constructor(props) {
 		super(props);
@@ -13,6 +45,20 @@ export default class TuitionPage extends Component {
 			department: null,	//ดึง DB
 			faculty: null,		//ดึง DB
 		}
+		setTimeout(async () => {
+			console.log("in");
+			let response = await getTuitionData(this.props.studentID);
+			console.log(response[0]);
+			this.setState({
+				tuition: response.tuition, //ไว้ดึงจาก DB Generate ค่าเทอม
+				isPaid: response.isPaid, //ถ้าไม่มีก็จีจี
+				sem: response.sem,				//ดึง DB
+				year: response.year,			//ดึง DB
+				department: response.department,	//ดึง DB
+				faculty: response.faculty,		//ดึง DB
+			})
+			console.log(this.state);
+		}, 0);
 	}
 
 	render() {

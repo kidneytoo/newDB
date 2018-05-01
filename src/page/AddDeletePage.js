@@ -119,13 +119,13 @@ export default class AddDeletePage extends Component {
 	}
 
 	handleSectionChange = (idx) => (evt) => {
-		const newDeleteChangeSubject = this.state.deleteChangeSubject.map((delChange,sidx) => {
-			if (idx !== sidx) return delChange;
-			return {... delChange, changeSection: !delChange.changeSection};
-		});
+  const newDeleteChangeSubject = this.state.deleteChangeSubject.map((delChange,sidx) => {
+   if (idx !== sidx) return delChange;
+   return {... delChange, changeSection: evt.target.value};
+  });
 
-		this.setState({deleteChangeSubject: newDeleteChangeSubject});
-	}
+  this.setState({deleteChangeSubject: newDeleteChangeSubject});
+ }
 // [{subjectID:'',subjectName:'',section:'',isChange:false,changeSection:'',isDelete:false,}]
 	subjectChangeAndDelete = async(evt) => {
 		evt.preventDefault();
@@ -152,6 +152,7 @@ export default class AddDeletePage extends Component {
 
 				if(isChange === true){
 					var msg = ( await axios.post('http://localhost:8888/student/register/changeIntime' , {'deleteChangeSubject':deleteChangeSubject[i]} ) )
+					console.log(msg);
 				}
 				else if(isDelete === true){
 					var msg = ( await axios.post('http://localhost:8888/student/register/withdrawIntime' , {'deleteChangeSubject':deleteChangeSubject[i]} ) );
@@ -164,20 +165,27 @@ export default class AddDeletePage extends Component {
 		}
 	}
 
-	subjectAdd = (evt) => {
+	subjectAdd = async(evt) => {
 		evt.preventDefault();
-
+		console.log("IN");
 
 		//ตรวจว่าที่เพิ่มมันเข้าได้ไหม
+		var addSubject = this.state.addSubject;
+		console.log(addSubject);
+		// for(var i = 0 ; i < addSubject.length ; i++){
+			addSubject.studentID = this.state.studentID;
+			var msg = (await axios.post('http://localhost:8888/student/register/addIntime', {'addSubject':addSubject} ));
+			console.log(msg);
 
-		//ถ้าได้ ให้ทำอันนี้
-		var confirm = window.confirm("ยืนยันการเพิ่มรายวิชา?");
-		if(confirm == true) {
-			//จัดการกับ Database ตรงนี้แหละ
+			//ถ้าได้ ให้ทำอันนี้
+			var confirm = window.confirm("ยืนยันการเพิ่มรายวิชา?");
+			if(confirm == true) {
+				//จัดการกับ Database ตรงนี้แหละ
 
-			alert("การเพิ่มรายวิชาเสร็จสิ้น");
-			this.setState({isFinish: true});
-		}
+				alert("การเพิ่มรายวิชาเสร็จสิ้น");
+				this.setState({isFinish: true});
+			}
+		// }
 	}
 
 	render() {
@@ -240,9 +248,6 @@ export default class AddDeletePage extends Component {
 										<input value={this.state.addSubject.sectionf} onChange={this.handleSectionfChange} disabled = {this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionf" type="text" pattern="[0-9]*" required></input>
 											<select name="choice" id='choice' onChange={this.handleOperChange} value={this.state.addSubject.oper}>
 												<option value="only">เท่านั้น</option>
-												<option value="or">หรือ</option>
-												<option value="to">ถึง</option>
-												<option value="all">ทั้งหมด</option>
 											</select>
 										<input value={this.state.addSubject.sectionl} onChange={this.handleSectionlChange} disabled = {this.state.addSubject.oper === "only" || this.state.addSubject.oper === "all"} className="input is-rounded is-small sectionl" type="text" pattern="[0-9]*" required></input>
 									</td>

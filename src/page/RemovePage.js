@@ -4,8 +4,60 @@ import Redirect from 'react-router-dom/Redirect'
 import $ from 'jquery'
 import _ from 'lodash'
 
+var axios = require('axios')
+
 //Format ที่จะเก็บใน state subject
 var subj = [{subjectID:'',subjectName:'',section:'',isRemove:false}]
+
+function getApproveSubj(studentID) {
+	var sid = studentID;
+	var regData;
+
+	// console.log("GetRegData");
+
+	return new Promise( async (resolve, reject) => {
+		await( async() => {
+			// console.log("Nottyking");
+			regData = (await axios.post('http://localhost:8888/student/register/reqApproveSubj',{"sid" : sid})).data;
+			// console.log("Mira");
+			// console.log(regData);
+		})();
+		// console.log('passing');
+		resolve("success")
+	}).then(async(successMsg) => {
+		console.log(regData);
+		if(regData === "You do not have any approved course."){
+			regData = [];
+		}
+		else{
+			// for(var i = 0; i < regData.length ; i++){
+			// 	console.log("IN foreach",regData[i].cid);
+			// 	var cname = (await axios.post('http://localhost:8888/student/register/reqSubjectName',{"cid" : regData[i].cid})).data[0].credit;
+			// 	console.log(cname);
+			// 	regData[i].subjectName = cname;
+			// }
+
+			for(var i = 0 ; i < regData.length ; i++){
+				// console.log("IN foreach",regData[i].cid);
+				var cname = (await axios.post('http://localhost:8888/student/register/reqSubjectName',{"subjectID" : regData[i].cid})).data.data;
+				// console.log(cname);
+				console.log(sid);
+				regData[i].studentID = sid;
+				regData[i].subjectID = regData[i].cid;
+				regData[i].subjectName = cname;
+				regData[i].section = regData[i].sec_no;
+				regData[i].isRemove = false;
+				delete regData[i].cid;
+				delete regData[i].sec_no;
+				delete regData[i].sid;
+				delete regData[i].req_status;
+				delete regData[i].req_streak;
+			}
+		}
+		// console.log(regData);
+		return regData;
+	})
+}
 
 export default class RemovePage extends Component {
 	constructor(props) {
@@ -15,6 +67,15 @@ export default class RemovePage extends Component {
 			studentID : this.props.studentID,
 			subject : [], //เป็นตัวเก็บวิชาที่เรียนไป แนะนำให้เก็บ isRemove : false ไปด้วย ไว้ดึงค่า
 		}
+		setTimeout(async () => {
+			console.log("in");
+			let response = await getApproveSubj(this.props.studentID);
+			// console.log(response[0].subjectName);
+			this.setState({
+				subject: response
+			})
+			// console.log(this.state.deleteChangeSubject);
+		}, 0);
 	}
 
 	handleRemove = (idx) => (evt) => {
@@ -26,11 +87,26 @@ export default class RemovePage extends Component {
 		this.setState({subject: newRemoveSubject});
 	}
 
-	submitRemove = (evt) => {
+	submitRemove = async(evt) => {
 		evt.preventDefault();
 		var confirm = window.confirm("ยืนยันการถอน?");
 		if(confirm == true) {
 			//จัดการกับ Database ตรงนี้แหละ
+			var subject = this.state.subject;
+
+			for(var i = 0 ; i < subject.length ; i++){
+				var sid = subject[i].studentID;
+				var cid = subject[i].subjectID;
+				var cname = subject[i].subjectName;
+				var sec = subject[i].section;
+				var isRemove = subject[i].isRemove;
+
+				if(isRemove){
+					var msg = (await axios.post('http://localhost:8888/student/register/withdrawOutTime',{"subject" : subject[i]}))
+					console.log(msg);
+				}
+			}
+
 			alert("การถอนเสร็จสิ้น");
 			this.setState({isFinish: true});
 		}

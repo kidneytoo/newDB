@@ -50,10 +50,20 @@ router.post('/register/reqCredit',function(req, res){
   })
 })
 
-router.post('/register/checkPrerequisite', function(req, res){
-  var cid = req.body.subjectID;
+router.post('/register/reqGrade',function(req, res){
   var sid = req.body.sid;
 
+  var sql = "SELECT cid,gyear,gsem,graded FROM grade WHERE sid='" + sid + "'";
+  console.log("SQL: " + sql);
+  con.query(sql, function (err, result, field) {
+    // console.log("DATAAAAAA");
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log("reqgrade RESULT",result);
+    res.send(result);
+  })
 })
 
 router.post('/register/reqRegisteredData', function(req, res){
@@ -184,6 +194,102 @@ router.post('/register/reqAllSection', function (req, res){
   promise.then(result => {
     console.log("student reqAllSection:",result);
     res.send(result);
+  })
+})
+
+router.post('/register/reqTuitionData', function (req, res){
+  // tuition: response.tuition, //ไว้ดึงจาก DB Generate ค่าเทอม
+  // isPaid: response.isPaid, //ถ้าไม่มีก็จีจี student
+  // sem: response.sem,				//ดึง DB section
+  // year: response.year,			//ดึง DB section
+  // department: response.department,	//ดึง DB student -> belong -> depart
+  // faculty: response.faculty,		//ดึง DB
+  var sid = req.body.sid;
+  var data = {} ;
+  con.query("SET @msg = 10");
+  con.query("CALL getNormalFee(?, @msg)", [sid]);
+  con.query("SELECT @msg",function (err, result) {
+    if (err) {
+      console.log("ERR: ",err);
+      reject(err);
+    }
+    console.log("Result: ",result);
+    data.tuition = result[0]['@msg'];
+    console.log("TUItion",result);
+
+    var sql = "SELECT year,sem FROM section";
+    console.log("SQL: " + sql);
+    con.query(sql, function (err, result, field) {
+      // console.log("DATAAAAAA");
+      if (err){
+        console.log("ERROR");
+        throw err;
+      }
+      console.log("reqCredit RESULT",result);
+      data.year = result[0].year;
+      data.sem = result[0].sem;
+      console.log("YEAR",result[0].year);
+
+      var sql = "SELECT idno,isPaid FROM student WHERE sid='" + sid + "'";
+      console.log("SQL: " + sql);
+      con.query(sql, function (err, result, field) {
+        // console.log("DATAAAAAA");
+        if (err){
+          console.log("ERROR");
+          throw err;
+        }
+        console.log("reqCredit RESULT",result);
+        data.isPaid = (result[0].isPaid == 0)? false:true;
+        var id = result[0].idno;
+
+        var sql = "SELECT dep_id FROM person_belongs_to_dep WHERE idno='" + id + "'";
+        console.log("SQL: " + sql);
+        con.query(sql, function (err, result, field) {
+          // console.log("DATAAAAAA");
+          if (err){
+            console.log("ERROR");
+            throw err;
+          }
+          console.log("reqCredit RESULT",result);
+          var depID = result[0].dep_id;
+
+          var sql = "SELECT faculty_id,dep_name FROM department WHERE dep_id='" + depID + "'";
+          console.log("SQL: " + sql);
+          con.query(sql, function (err, result, field) {
+            // console.log("DATAAAAAA");
+            if (err){
+              console.log("ERROR");
+              throw err;
+            }
+            console.log("reqCredit RESULT",result);
+            data.department = result[0].dep_name;
+            var facID = result[0].faculty_id;
+
+            var sql = "SELECT faculty_name FROM faculty WHERE faculty_id='" + facID + "'";
+            console.log("SQL: " + sql);
+            con.query(sql, function (err, result, field) {
+              // console.log("DATAAAAAA");
+              if (err){
+                console.log("ERROR");
+                throw err;
+              }
+              console.log("reqCredit RESULT",result);
+              data.faculty = result[0].faculty_name;
+
+              res.send(data);
+
+
+            })
+
+          })
+
+        })
+
+      })
+
+    })
+
+    // res.json(result);
   })
 })
 
@@ -359,6 +465,28 @@ router.post('/register/withdrawIntime', function (req, res){
   })
 })
 
+router.post('/register/withdrawOutTime', function (req, res){
+  console.log("@@@ Withdraw");
+  var data = req.body.subject;
+  var sid = data.studentID;
+  var cid = data.subjectID;
+  var sec = data.section;
+
+  console.log(data,sid,cid,sec);
+
+  con.query("SET @msg = 10");
+  con.query("CALL withdrawOutOfTime(?, ?, ?, @msg)", [sid,cid,sec]);
+  con.query("SELECT @msg",function (err, result) {
+    if (err) {
+      console.log("ERR: ",err);
+      res.send(err);
+    }
+    console.log("Result: ",result);
+    res.send(result);
+    // res.json(result);
+  })
+})
+
 router.post('/register/changeInTime', function (req, res){
   var data = req.body.deleteChangeSubject;
   var sid = data.studentID;
@@ -366,22 +494,110 @@ router.post('/register/changeInTime', function (req, res){
   var sec = data.section;
   var changeTo = data.changeSection;
 
-  // var sql = "SELECT seats,used_seats FROM section WHERE cname='" + cname + "'";
-  // console.log("SQL: " + sql);
-  con.query("SELECT seats,used_seats FROM section WHERE cid='?' AND sec_no='?'", [cid, changeTo] , function (err, result, field) {
+  console.log(cid,changeTo);
+
+  var sql = "SELECT seats,used_seats FROM section WHERE cid='" + cid + "' AND sec_no='" + changeTo + "'";
+  console.log("SQL: " + sql);
+
+  con.query(sql, function (err, result, field) {
     // console.log("DATAAAAAA");
+    console.log("changeInTime RESULT",result);
     if (err){
       console.log("ERROR");
       throw err;
     }
-    console.log("changeInTime RESULT",result);
     if(result[0].used_seats < result[0].seats){
+      con.query("SET @msg = 10");
+      con.query("CALL withdrawInTime(?, ?, ?, @msg)", [sid,cid,sec]);
+      con.query("SELECT @msg",function (err, result) {
+        if (err) {
+          console.log("ERR: ",err);
+          res.send(err);
+        }
+        console.log("Result: ",result);
+        con.query("SET @msg = 10");
+        con.query("CALL regInSec(?, ?, ?, @msg)", [sid,cid,changeTo]);
+        con.query("SELECT @msg",function (err, result) {
+          if (err) {
+            console.log("ERR: ",err);
+            reject(err);
+          }
+          console.log("Result: ",result);
+          console.log(result[0]['@msg']);
+          con.query("SET @msg = 10");
+          con.query("CALL approveRegRequest(?, ?, ?, @msg)", [sid,cid,changeTo]);
+          con.query("SELECT @msg",function (err, result) {
+            if (err) {
+              console.log("ERR: ",err);
+              reject(err);
+            }
+            console.log("Result: ",result);
+            console.log(result[0]['@msg']);
+            res.send("result");
 
+            // res.json(result);
+          })
+          // res.json(result);
+        })
+        // res.json(result);
+      })
     }
     else{
       res.send("Sec full")
     }
   })
+})
+
+router.post('/register/addIntime', function (req, res){
+   // {subjectID:'',sectionf:null,oper:"only",sectionl:null},
+  console.log(req.body.addSubj);
+  var data = req.body.addSubject;
+  var sid = data.studentID;
+  var cid = data.subjectID;
+  var secf = data.sectionf;
+  var secl = data.sectionl;
+  var oper = data.oper;
+
+  console.log(sid,cid,secf);
+
+  // var sql = "SELECT seats,used_seats FROM section WHERE cid='" + cid + "' AND sec_no='" + secf + "'";
+  // console.log("SQL: " + sql);
+  //
+  // con.query(sql, function (err, result, field) {
+  //   if(err){
+  //     console.log(err);
+  //     throw err;
+  //   }
+  //   console.log("Result",result);
+  //   if(result[0].used_seats < result[0].seats){
+      con.query("SET @msg = 10");
+      con.query("CALL regInSec(?, ?, ?, @msg)", [sid,cid,secf]);
+      con.query("SELECT @msg",function (err, result) {
+        if (err) {
+          console.log("ERR: ",err);
+          reject(err);
+        }
+        console.log("Result: ",result);
+        con.query("SET @msg = 10");
+        con.query("CALL approveRegRequest(?, ?, ?, @msg)", [sid,cid,secf]);
+        con.query("SELECT @msg",function (err, result) {
+          if (err) {
+            console.log("ERR: ",err);
+            reject(err);
+          }
+          console.log("Result: ",result);
+          console.log(result[0]['@msg']);
+          res.send(result);
+
+          // res.json(result);
+        })
+        // res.json(result);
+      })
+    // }
+  //   else{
+  //     res.send("course full");
+  //   }
+  // }
 })
 
 router.post('/view/registerdTable',function(req, res){
