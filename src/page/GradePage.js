@@ -110,7 +110,7 @@ export default class GradePage extends Component {
 	render() {
 		return (
 		this.state.showTranscript ?
-			<Transcript />
+			<Transcript studentID={this.state.studentID}/>
 
 
 			:

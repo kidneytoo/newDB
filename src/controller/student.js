@@ -12,6 +12,44 @@ var scon = new mysql({
   port : '3306'
 })
 
+router.post('/register/reqStudentData', function(req, res){
+  console.log("in reqStudentData");
+  var sid = req.body.studentID;
+  console.log(req.body);
+  console.log("sid:",sid);
+  var sql = "SELECT idno FROM student WHERE sid='" + sid + "'";
+  console.log("SQL: " + sql);
+  con.query(sql, function (err, result, field) {
+    console.log("student data : data in");
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log("studentData RESULT",result);
+    if(result.length === 0){
+      res.send("ID incorrect.");
+    }
+    else{
+      console.log("Result studentData: ",result);
+
+      var idno = result.idno;
+      console.log("idno",idno);
+      sql = "select prefix,fname,lname from person where idno='" + idno + "'";
+      console.log("SQL:", sql);
+      con.query(sql, function(err, result){
+        console.log("result",result);
+        if (err) {
+          console.log("ERR: ",err);
+          res.send(err);
+        }
+        console.log("Result: ",result);
+        res.send(result);
+        // res.json(result);
+      });
+    }
+  })
+})
+
 router.post('/register/reqApproveSubj',function(req, res){
   var sid = req.body.sid;
 
@@ -168,7 +206,61 @@ router.post('/register/reqRegisteredData', function(req, res){
   })();
 })
 
+router.post('/register/getIdno', function(req, res){
+  console.log("In getIdno");
+  var sid = req.body.sid;
+  console.log("SID:",sid);
+
+  var sql = "SELECT idno FROM student WHERE sid='" + sid + "'";
+  console.log("SQL: " + sql);
+  con.query(sql, function (err, result, field) {
+    // console.log("DATAAAAAA");
+    if (err){
+      console.log("ERROR");
+      throw err;
+    }
+    console.log("reqCredit RESULT",result);
+    var id = result[0].idno;
+
+    var sql = "SELECT prefix,fname,lname FROM person WHERE idno='" + id + "'";
+    console.log("SQL: " + sql);
+    con.query(sql, function (err, result, field) {
+      // console.log("DATAAAAAA");
+      if (err){
+        console.log("ERROR");
+        throw err;
+      }
+      console.log("reqCredit RESULT",result);
+      var prefix = result[0].prefix;
+      var fname = result[0].fname;
+      var lname = result[0].lname;
+      res.send({
+        'prefix': prefix,
+        'fname': fname,
+        'lname': lname
+      })
+    })
+  })
+})
+
+router.post('/register/reqTransc', function(req, res){
+  var sid = req.body.sid;
+  console.log("sid",sid);
+  sql = "select gyear,gsem,grade.cid,cname,credit,graded from grade join course on grade.cid=course.cid where sid ='" + sid + "'";
+  con.query(sql, function(err, result){
+    console.log("result",result);
+    if (err) {
+      console.log("ERR: ",err);
+      res.send(err);
+    }
+    console.log("Result: ",result);
+    res.send(result);
+    // res.json(result);
+  });
+})
+
 router.post('/register/reqSubjectName', function (req, res){
+  console.log("In reqSubJectName");
   console.log(getData);
   const promise = new Promise((resolve, reject) => {
     getData.CNameFromCID(req, resolve, reject);
@@ -300,7 +392,7 @@ router.post('/register/checkRegSub', function (req, res){
   var approveSec = []
   var rejectSec = []
   var promises = []
-  console.log("-> req",req);
+  // console.log("-> req",req);
   console.log("-> body",req.body);
   console.log("-> SID",sid);
   console.log("-> regSection",regSubj);
@@ -343,7 +435,7 @@ router.post('/register/checkRegSub', function (req, res){
                   'sec' : sec,
                   'msg' : result[0]['@msg']
                 }
-                if(msg['msg'] === 'request success'){
+                if(msg['msg'] === 'request success' || msg['msg'] === 'request success: required course(s) have taken'){
                   approveSec.push(msg);
                 }
                 else{
@@ -404,7 +496,10 @@ router.post('/register/storeToRegIn', function (req, res){
           try{
             var cid = regSubj[i].subjectID;
             var sec = regSubj[i].section[j];
+            console.log("cid:",cid);
+            console.log("sec:",sec);
             var aPromise = new Promise((resolve, reject) => {
+              console.log("Query",sid,cid,sec);
               con.query("SET @msg = 10");
               con.query("CALL regInSec(?, ?, ?, @msg)", [sid,cid,sec]);
               con.query("SELECT @msg",function (err, result) {
@@ -598,10 +693,6 @@ router.post('/register/addIntime', function (req, res){
   //     res.send("course full");
   //   }
   // }
-})
-
-router.post('/view/registerdTable',function(req, res){
-  console.log("In viewing register table");
 })
 
 module.exports = router ;

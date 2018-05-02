@@ -564,7 +564,7 @@ select {
 	display: -webkit-flex;
 	justify-content: space-between;
 	flex-flow: column;
-	margin: 10px; 
+	margin: 10px;
 }
 
 .topTranscript {
@@ -632,7 +632,7 @@ select {
 	justify-content: center;
 	flex-flow: column;
 	font-size: 0.5rem;
-	padding-bottom: 40px;
+	margin-bottom: 40px;
 }
 
 .blankGrade {

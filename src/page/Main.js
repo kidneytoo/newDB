@@ -12,16 +12,48 @@ import Transcript from './Transcript'
 import Redirect from 'react-router-dom/Redirect'
 import dog from './image/dog.png'
 
+var axios = require('axios')
+
+function getDataName(studentID) {
+	var sid = studentID;
+
+	// console.log("GetRegData");
+
+	return new Promise( async (resolve, reject) => {
+		var regData;
+		await( async() => {
+			// console.log("Nottyking");
+			regData = (await axios.post('http://localhost:8888/student/register/getIdno',{"sid" : sid})).data;
+			// console.log("Mira");
+			// console.log(regData);
+		})();
+		// console.log('passing');
+		resolve(regData)
+	}).then(async(regData) => {
+		console.log(regData);
+		// console.log(regData);
+		return regData;
+	})
+}
+
 export default class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			studentID: '1',
-			prefix: 'นาย',
-			firstname: 'ดาต้าเบส',
-			lastname: 'แมเนจ',
+			studentID: this.props.studentID,
 			person: this.props.person,
 		};
+		setTimeout(async () => {
+			console.log("in",this.props.studentID);
+			let response = await getDataName(this.props.studentID);
+			// console.log(response[0].subjectName);
+			this.setState({
+				prefix: response.prefix,
+				firstname: response.fname,
+				lastname: response.lname,
+			})
+			console.log(this.state.data);
+		}, 0);
 	}
 
 
