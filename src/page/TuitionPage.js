@@ -70,7 +70,7 @@ export default class TuitionPage extends Component {
 				<h1 className="head">คำนวณค่าลงทะเบียนเรียน</h1>
 				<div className="tuition">
 					<h4>ค่าลงทะเบียนเรียน {semester[this.state.sem]} ปีการศึกษา {this.state.year}</h4>
-					<h6>{this.state.department} {this.state.faculty}์</h6>
+					<h6>{this.state.department} {this.state.faculty}</h6>
 					<div className="tuitionFee">
 						<p>{this.state.tuition} บาท</p>
 					</div>

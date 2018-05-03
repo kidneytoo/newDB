@@ -95,6 +95,8 @@ export default class GradePage extends Component {
 		setTimeout(async () => {
 			let response = await getRegistData(this.props.studentID);
 			console.log(response);
+			if(response=="ERROR")
+				response = []
 			this.setState({
 				sem: response
 			})

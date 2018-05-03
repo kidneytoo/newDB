@@ -113,43 +113,64 @@ export default class RegisterPage extends React.Component {
 										var response = result.data;
 										console.log('req_allSection success - data:');
 										console.log(response);
-										sectionExisting = response.data;
-										console.log(sectionExisting);
-
-										var checkSec = (section) => {
-											return sectionExisting.reduce((acc, it) => {
-												if(it.sec_no == section) return true;
-												return acc;
-											}, false)
-										};
-										console.log(registSubject_before[i]);
-										if(oper == "only" && checkSec(sectionf)) {
-											sect.push(sectionf);
-										}
-										else if(oper == "or") {
-											if(checkSec(sectionf))
-											sect.push(sectionf);
-											if(checkSec(sectionl))
-											sect.push(sectionl);
-										}
-										else if(oper == "to") {
-											for(var j = sectionf ; j <= sectionl ; j++) {
-												if(checkSec(j))
-												sect.push(j)
+										console.log(response=="There is no this subject");
+										if(response.msg=="There is no this subject"){
+											if(oper == "only") {
+												sect.push(sectionf);
 											}
+											else if(oper == "or") {
+												sect.push(sectionf);
+												sect.push(sectionl);
+											}
+											else if(oper == "to") {
+												for(var j = sectionf ; j <= sectionl ; j++) {
+													sect.push(j)
+												}
+											}
+											else if(oper == 'all'){
+												sect.push('-')
+											}
+											registSubject_after.push({subjectID:subjectID,section:sect,subjectName:subjName});
 										}
-										else if(oper == 'all'){
-											sectionExisting.forEach((secObj) => {
-												sect.push(secObj.sec_no);
-											})
-										}
+										else{
+											sectionExisting = response.data;
+											console.log(sectionExisting);
 
-										console.log(sect);
-										if(sect.length===0){
-											sect.push('-')
+											var checkSec = (section) => {
+												return sectionExisting.reduce((acc, it) => {
+													if(it.sec_no == section) return true;
+													return acc;
+												}, false)
+											};
+											console.log(registSubject_before[i]);
+											if(oper == "only" && checkSec(sectionf)) {
+												sect.push(sectionf);
+											}
+											else if(oper == "or") {
+												if(checkSec(sectionf))
+												sect.push(sectionf);
+												if(checkSec(sectionl))
+												sect.push(sectionl);
+											}
+											else if(oper == "to") {
+												for(var j = sectionf ; j <= sectionl ; j++) {
+													if(checkSec(j))
+													sect.push(j)
+												}
+											}
+											else if(oper == 'all'){
+												sectionExisting.forEach((secObj) => {
+													sect.push(secObj.sec_no);
+												})
+											}
+
+											console.log(sect);
+											if(sect.length===0){
+												sect.push('-')
+											}
+											console.log("ADD REgist");
+											registSubject_after.push({subjectID:subjectID,section:sect,subjectName:subjName});
 										}
-										console.log("ADD REgist");
-										registSubject_after.push({subjectID:subjectID,section:sect,subjectName:subjName});
 										resolve();
 									})
 

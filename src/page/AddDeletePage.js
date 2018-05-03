@@ -28,6 +28,7 @@ function getApproveSubj(studentID) {
 			regData = [];
 		}
 		else{
+			console.log(regData);
 			// for(var i = 0; i < regData.length ; i++){
 			// 	console.log("IN foreach",regData[i].cid);
 			// 	var cname = (await axios.post('http://localhost:8888/student/register/reqSubjectName',{"cid" : regData[i].cid})).data[0].credit;
